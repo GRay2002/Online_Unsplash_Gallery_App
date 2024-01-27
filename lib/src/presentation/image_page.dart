@@ -31,116 +31,130 @@ class ImagePage extends StatelessWidget {
             titleTextStyle: const TextStyle(
               color: Colors.white,
               fontSize: 20,
+              fontWeight: FontWeight.bold,
             ),
+            centerTitle: true,
           ),
           body: CommentsContainer(
             builder: (BuildContext context, List<Comment> comments) {
               return UsersContainer(
                 builder: (BuildContext context, Map<String, AppUser> users) {
-                  return CustomScrollView(
-                    slivers: <Widget>[
-                      SliverToBoxAdapter(
-                        child: Column(
-                          children: <Widget>[
-                            Center(
-                              child: SizedBox(
-                                height: 300,
-                                child: AspectRatio(
-                                  aspectRatio: 1.2,
-                                  child: GestureDetector(
-                                    onTap: () {
-                                      Navigator.push(
-                                          context,
-                                          MaterialPageRoute<void>(
-                                            builder: (BuildContext context) => Scaffold(
-                                              body: Center(
-                                                child: PhotoView(
-                                                  imageProvider: NetworkImage(image.smallImage.small),
-                                                  backgroundDecoration: const BoxDecoration(color: Colors.transparent),
-                                                  onTapUp: (BuildContext context, TapUpDetails details,
-                                                      PhotoViewControllerValue controller) {
-                                                    Navigator.pop(context);
-                                                  },
-                                                ),
-                                              ),
-                                            ),
-                                          ));
-                                    },
-                                    child: Image.network(
-                                      image.smallImage.small,
+                  return SingleChildScrollView(
+                    child: Padding(
+                      padding: const EdgeInsets.all(16.0),
+                      child: Column(
+                        crossAxisAlignment: CrossAxisAlignment.start,
+                        children: <Widget>[
+                          GestureDetector(
+                            onTap: () {
+                              Navigator.push(
+                                context,
+                                MaterialPageRoute<void>(
+                                  builder: (BuildContext context) => Scaffold(
+                                    body: Center(
+                                      child: PhotoView(
+                                        imageProvider: NetworkImage(image.smallImage.small),
+                                        backgroundDecoration: const BoxDecoration(color: Colors.transparent),
+                                        onTapUp: (BuildContext context, TapUpDetails details,
+                                            PhotoViewControllerValue controller) {
+                                          Navigator.pop(context);
+                                        },
+                                      ),
                                     ),
                                   ),
                                 ),
-                              ),
+                              );
+                            },
+                            child: Image.network(
+                              image.smallImage.small,
+                              height: 300,
+                              width: double.infinity,
+                              fit: BoxFit.cover,
                             ),
-                            const SizedBox(height: 16.0),
-                            Text(
-                              '${image.likes} 😍️',
-                              style: const TextStyle(
-                                color: Colors.red,
-                                fontSize: 32.0,
-                                fontWeight: FontWeight.bold,
-                              ),
-                            ),
-                            const SizedBox(height: 16.0),
-                            Padding(
-                              padding: const EdgeInsets.all(8.0),
-                              child: Text(
-                                image.description,
-                                style: const TextStyle(
-                                  fontSize: 16.0,
+                          ),
+                          const SizedBox(height: 8.0),
+                          Container(
+                            padding: const EdgeInsets.symmetric(horizontal: 16.0),
+                            child: Column(
+                              crossAxisAlignment: CrossAxisAlignment.start,
+                              children: [
+                                const Text(
+                                  'Description:',
+                                  style: TextStyle(fontSize: 16.0, fontWeight: FontWeight.bold),
                                 ),
-                              ),
+                                const SizedBox(height: 8.0),
+                                Text(
+                                  image.description,
+                                  style: const TextStyle(fontSize: 16.0),
+                                ),
+                              ],
                             ),
-                            const SizedBox(height: 16.0),
-                            TextButton(
+                          ),
+                          const SizedBox(height: 16.0),
+                          Row(
+                            mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                            children: [
+                              ElevatedButton(
                                 onPressed: () {
                                   followlink(Uri.parse(image.authorPage.links.html));
                                 },
-                                child: Text('Author page: ${image.authorPage.links.html}')),
-                          ],
-                        ),
-                      ),
-                      const SliverPadding(
-                        padding: EdgeInsets.all(16.0),
-                        sliver: SliverToBoxAdapter(
-                          child: Text(
-                            'Comments',
-                            style: TextStyle(fontSize: 32.0),
-                          ),
-                        ),
-                      ),
-                      if (comments.isNotEmpty)
-                        SliverList(
-                          delegate: SliverChildBuilderDelegate(
-                            (BuildContext context, int index) {
-                              final Comment comment = comments[index];
-                              final AppUser? user = users[comment.uid];
-
-                              return ListTile(
-                                title: Text(comment.text),
-                                subtitle: Text(<Object>[
-                                  if (user != null) user.displayName,
-                                  comment.createdAt,
-                                ].join('\n')),
-                              );
-                            },
-                            childCount: comments.length,
-                          ),
-                        )
-                      else
-                        const SliverFillRemaining(
-                          child: Padding(
-                            padding: EdgeInsets.all(16.0),
-                            child: Center(
-                              child: Text(
-                                'Be the first to leave a comment',
-                                style: TextStyle(fontSize: 16.0),
+                                child: Text('Visit Author Page'),
                               ),
+                              Text(
+                                '${image.likes} 😍️',
+                                style: const TextStyle(
+                                  color: Colors.red,
+                                  fontSize: 20.0,
+                                  fontWeight: FontWeight.bold,
+                                ),
+                              ),
+                            ],
+                          ),
+                          const SizedBox(height: 16.0),
+                          Container(
+                            decoration: BoxDecoration(
+                              border: Border.all(color: Colors.grey),
+                              borderRadius: BorderRadius.circular(8.0),
+                            ),
+                            padding: const EdgeInsets.all(16.0),
+                            child: Column(
+                              crossAxisAlignment: CrossAxisAlignment.start,
+                              children: [
+                                const Text(
+                                  'Comments',
+                                  style: TextStyle(fontSize: 24.0, fontWeight: FontWeight.bold),
+                                ),
+                                const SizedBox(height: 8.0),
+                                if (comments.isNotEmpty)
+                                  Column(
+                                    children: comments.map((Comment comment) {
+                                      final AppUser? user = users[comment.uid];
+
+                                      return ListTile(
+                                        title: Text(
+                                          comment.text,
+                                          style: const TextStyle(fontWeight: FontWeight.normal),
+                                        ),
+                                        subtitle: Text(
+                                          '${user?.displayName ?? 'Unknown User'} • ${comment.createdAt}',
+                                          style: const TextStyle(fontWeight: FontWeight.bold),
+                                        ),
+                                      );
+                                    }).toList(),
+                                  )
+                                else
+                                  const Center(
+                                    child: Text(
+                                      'Be the first to leave a comment',
+                                      style: TextStyle(fontSize: 16.0),
+                                    ),
+                                  ),
+                              ],
                             ),
                           ),
-                        )
-                    ],
+                        ],
+                      ),
+                    ),
                   );
                 },
               );
