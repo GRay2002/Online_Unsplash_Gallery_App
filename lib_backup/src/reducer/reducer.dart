@@ -3,6 +3,7 @@ import 'dart:developer';
 import 'package:redux/redux.dart';
 import '../actions/change_picture.dart';
 import '../actions/create_user.dart';
+import '../actions/get_comments.dart';
 import '../actions/get_current_user.dart';
 import '../actions/load_items.dart';
 import '../actions/login.dart';
@@ -26,6 +27,7 @@ AppState reducer(AppState state, dynamic action) {
     TypedReducer<AppState, LoginSuccessful>(_loginSuccessful).call,
     TypedReducer<AppState, ChangePictureSuccessful>(_changePictureSuccessful).call,
     TypedReducer<AppState, SetSelectedImage>(_setSelectedImage).call,
+    TypedReducer<AppState, GetCommentsSuccessful>(_getCommentsSuccessful).call,
   ])(state, action);
 }
 
@@ -85,4 +87,8 @@ AppState _changePictureSuccessful(AppState state, ChangePictureSuccessful action
 
 AppState _setSelectedImage(AppState state, SetSelectedImage action) {
   return state.copyWith(selectedImage: action.image);
+}
+
+AppState _getCommentsSuccessful(AppState state, GetCommentsSuccessful action) {
+  return state.copyWith(comments: action.comments);
 }

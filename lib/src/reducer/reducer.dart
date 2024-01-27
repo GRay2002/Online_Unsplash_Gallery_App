@@ -2,14 +2,18 @@ import 'dart:developer';
 
 import 'package:redux/redux.dart';
 import '../actions/change_picture.dart';
+import '../actions/create_comment.dart';
 import '../actions/create_user.dart';
 import '../actions/get_comments.dart';
 import '../actions/get_current_user.dart';
+import '../actions/get_users.dart';
 import '../actions/load_items.dart';
 import '../actions/login.dart';
 import '../actions/set.dart';
 import '../actions/sign_out.dart';
 import '../models/app_state.dart';
+import '../models/app_user.dart';
+import '../models/comment.dart';
 import '../models/unsplash_image.dart';
 
 AppState reducer(AppState state, dynamic action) {
@@ -28,6 +32,8 @@ AppState reducer(AppState state, dynamic action) {
     TypedReducer<AppState, ChangePictureSuccessful>(_changePictureSuccessful).call,
     TypedReducer<AppState, SetSelectedImage>(_setSelectedImage).call,
     TypedReducer<AppState, GetCommentsSuccessful>(_getCommentsSuccessful).call,
+    TypedReducer<AppState, CreateCommentSuccessful>(_createCommentSuccessful).call,
+    TypedReducer<AppState, GetUsersSuccessful>(_getUsersSuccessful).call,
   ])(state, action);
 }
 
@@ -91,4 +97,17 @@ AppState _setSelectedImage(AppState state, SetSelectedImage action) {
 
 AppState _getCommentsSuccessful(AppState state, GetCommentsSuccessful action) {
   return state.copyWith(comments: action.comments);
+}
+
+AppState _createCommentSuccessful(AppState state, CreateCommentSuccessful action) {
+  return state.copyWith(comments: <Comment>[action.comment, ...state.comments]);
+}
+
+AppState _getUsersSuccessful(AppState state, GetUsersSuccessful action) {
+  return state.copyWith(
+    users: <String, AppUser>{
+      ...state.users,
+      for (final AppUser user in action.users) user.uid: user,
+    },
+  );
 }

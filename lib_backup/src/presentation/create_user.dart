@@ -6,7 +6,7 @@ import '../actions/create_user.dart';
 import 'extensions.dart';
 
 class CreateUserPage extends StatefulWidget {
-  const CreateUserPage({Key? key});
+  const CreateUserPage({super.key});
 
   @override
   State<CreateUserPage> createState() => _CreateUserPageState();
@@ -124,7 +124,7 @@ class _CreateUserPageState extends State<CreateUserPage> {
                     }
                   },
                   style: ElevatedButton.styleFrom(
-                    primary: Colors.purple.shade100,
+                    backgroundColor: Colors.purple.shade100,
                     padding: const EdgeInsets.all(16.0),
                     shape: RoundedRectangleBorder(
                       borderRadius: BorderRadius.circular(10.0),

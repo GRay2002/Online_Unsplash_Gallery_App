@@ -57,6 +57,7 @@ class MyApp extends StatelessWidget {
       store: store,
       child: MaterialApp(
         theme: ThemeData(colorScheme: ColorScheme.fromSeed(seedColor: Colors.purple.shade700)),
+        title: 'My Unsplash photos gallery',
         home: const HomePage(),
         routes: <String, WidgetBuilder>{
           '/createUser': (BuildContext context) => const CreateUserPage(),

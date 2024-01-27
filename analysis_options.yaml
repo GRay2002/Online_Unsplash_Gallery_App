@@ -249,3 +249,9 @@ linter:
     # - use_to_and_as_if_applicable # has false positives, so we prefer to catch this by code-review
     - valid_regexps
     - void_checks
+
+  analyzer:
+    exclude:
+      - "**/firebase_options.dart"   # Exclude specific files
+      - "**/lib_backup/**"           # Exclude entire directory
+      - "**/lib_backup/src/**"       # Exclude specific subdirectory

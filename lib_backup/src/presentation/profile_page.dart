@@ -1,3 +1,5 @@
+// ignore_for_file: use_build_context_synchronously
+
 import 'package:flutter/material.dart';
 import 'package:image_picker/image_picker.dart';
 
@@ -65,7 +67,7 @@ class ProfilePage extends StatelessWidget {
                     style: const TextStyle(fontSize: 32.0),
                   ),
                   const SizedBox(height: 32),
-                  Container(
+                  SizedBox(
                     width: double.infinity, // Make the container take the full width
                     child: TextButton(
                       style: TextButton.styleFrom(

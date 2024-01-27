@@ -12,6 +12,7 @@ class AppState with _$AppState {
   const factory AppState({
     AppUser? user,
     UnsplashImage? selectedImage,
+    @Default(<String, AppUser>{}) Map<String, AppUser> users,
     @Default(<Comment>[]) List<Comment> comments,
     @Default(<UnsplashImage>[]) List<UnsplashImage> unsplashImages,
     @Default(false) bool isLoading,

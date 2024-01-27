@@ -3,9 +3,11 @@ import 'package:rxdart/rxdart.dart';
 
 import '../actions/app_action.dart';
 import '../actions/change_picture.dart';
+import '../actions/create_comment.dart';
 import '../actions/create_user.dart';
 import '../actions/get_comments.dart';
 import '../actions/get_current_user.dart';
+import '../actions/get_users.dart';
 import '../actions/load_items.dart';
 import '../actions/login.dart';
 import '../actions/sign_out.dart';
@@ -32,6 +34,8 @@ class AppEpics extends EpicClass<AppState> {
       TypedEpic<AppState, LoginStart>(_loginStart).call,
       TypedEpic<AppState, ChangePictureStart>(_changePictureStart).call,
       TypedEpic<AppState, GetCommentsStart>(_getCommentsStart).call,
+      TypedEpic<AppState, CreateCommentStart>(_createCommentStart).call,
+      TypedEpic<AppState, GetUsersStart>(_getUsersStart).call,
     ])(actions, store);
   }
 
@@ -103,12 +107,41 @@ class AppEpics extends EpicClass<AppState> {
   Stream<AppAction> _getCommentsStart(Stream<GetCommentsStart> actions, EpicStore<AppState> store) {
     return actions //
         .flatMap((GetCommentsStart action) {
+      return Stream<void>.value(null).asyncMap((_) => api.getComments(action.imageId)).expand((List<Comment> comments) {
+        final List<String> uids = comments
+            .map((Comment comment) => comment.uid)
+            .toSet()
+            .where((String uid) => store.state.users[uid] == null)
+            .toList();
+
+        return <AppAction>[
+          GetComments.successful(comments),
+          if (uids.isNotEmpty) GetUsers(uids),
+        ];
+      }).onErrorReturnWith((Object error, StackTrace stackTrace) => GetComments.error(error, stackTrace));
+    });
+  }
+
+  Stream<AppAction> _createCommentStart(Stream<CreateCommentStart> actions, EpicStore<AppState> store) {
+    return actions //
+        .flatMap((CreateCommentStart action) {
       return Stream<void>.value(null)
           .asyncMap((_) {
-            return api.getComments(action.imageId);
+            return api.createComment(
+                imageId: store.state.selectedImage!.imageId, text: action.text, uid: store.state.user!.uid);
           })
-          .map((List<Comment> comments) => GetComments.successful(comments))
-          .onErrorReturnWith((Object error, StackTrace stackTrace) => GetComments.error(error, stackTrace));
+          .map((Comment comment) => CreateComment.successful(comment))
+          .onErrorReturnWith((Object error, StackTrace stackTrace) => CreateComment.error(error, stackTrace));
+    });
+  }
+
+  Stream<AppAction> _getUsersStart(Stream<GetUsersStart> actions, EpicStore<AppState> store) {
+    return actions //
+        .flatMap((GetUsersStart action) {
+      return Stream<void>.value(null)
+          .asyncMap((_) => authApi.getUsers(action.uids))
+          .map((List<AppUser> users) => GetUsers.successful(users))
+          .onErrorReturnWith((Object error, StackTrace stackTrace) => GetUsers.error(error, stackTrace));
     });
   }
 }

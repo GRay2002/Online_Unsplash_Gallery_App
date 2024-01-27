@@ -29,7 +29,6 @@ class ImageApi {
         ),
         headers: <String, String>{'Authorization': 'Client-ID $_accessKey'},
       );
-      print(response.body);
 
       final Map<String, dynamic> jsonBody = json.decode(response.body) as Map<String, dynamic>;
 
@@ -44,7 +43,6 @@ class ImageApi {
         ),
         headers: <String, String>{'Authorization': 'Client-ID $_accessKey'},
       );
-      print(response.body);
 
       imgData = json.decode(response.body) as List<dynamic>;
     }
@@ -61,5 +59,24 @@ class ImageApi {
     return snapshot.docs //
         .map((QueryDocumentSnapshot<Map<String, dynamic>> doc) => Comment.fromJson(doc.data()))
         .toList();
+  }
+
+  Future<Comment> createComment({
+    required String imageId,
+    required String text,
+    required String uid,
+  }) async {
+    final DocumentReference<Map<String, dynamic>> ref = _firestore.collection('photos/$imageId/reviews').doc();
+
+    final Comment comment = Comment(
+      id: ref.id,
+      text: text,
+      uid: uid,
+      createdAt: DateTime.now(),
+    );
+
+    await ref.set(comment.toJson());
+
+    return comment;
   }
 }
