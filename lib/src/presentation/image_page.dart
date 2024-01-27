@@ -26,7 +26,7 @@ class ImagePage extends StatelessWidget {
       builder: (BuildContext context, UnsplashImage image) {
         return Scaffold(
           appBar: AppBar(
-            backgroundColor: Colors.blue,
+            backgroundColor: Colors.purple.shade700,
             title: Text(image.description),
             titleTextStyle: const TextStyle(
               color: Colors.white,
@@ -75,7 +75,7 @@ class ImagePage extends StatelessWidget {
                             ),
                             const SizedBox(height: 16.0),
                             Text(
-                              '${image.likes} ❤️',
+                              '${image.likes} 😍️',
                               style: const TextStyle(
                                 color: Colors.red,
                                 fontSize: 32.0,
