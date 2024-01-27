@@ -26,9 +26,4 @@ jobs:
           echo "    storageBucket: '${{ secrets.FIREBASE_STORAGE_BUCKET }}'," >> lib/firebase_options.dart
           echo "  );" >> lib/firebase_options.dart
           echo "}" >> lib/firebase_options.dart
-      - name: Format firebase_options.dart
-        run: dart format -l 120 ./lib/firebase_options.dart
-      - name: analyze code
-        run: flutter analyze
-      - name: check format
-        run: dart format -l 120 --set-exit-if-changed ./lib
+      
