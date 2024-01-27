@@ -75,7 +75,7 @@ class _LoginUserPageState extends State<LoginUserPage> {
                     return null;
                   },
                 ),
-                SizedBox(height: 16),
+                const SizedBox(height: 16),
                 TextFormField(
                   controller: password,
                   obscureText: true,
@@ -87,7 +87,7 @@ class _LoginUserPageState extends State<LoginUserPage> {
                     return null;
                   },
                 ),
-                SizedBox(height: 16),
+                const SizedBox(height: 16),
                 ElevatedButton(
                   onPressed: () {
                     if (formKey.currentState!.validate()) {
@@ -95,7 +95,7 @@ class _LoginUserPageState extends State<LoginUserPage> {
                     }
                   },
                   style: ElevatedButton.styleFrom(
-                    primary: Colors.purple.shade100,
+                    backgroundColor: Colors.purple.shade100,
                     padding: const EdgeInsets.all(16.0),
                     shape: RoundedRectangleBorder(
                       borderRadius: BorderRadius.circular(10.0),
@@ -103,13 +103,13 @@ class _LoginUserPageState extends State<LoginUserPage> {
                   ),
                   child: const Text('Login User', style: TextStyle(fontSize: 18)), // Adjust the font size
                 ),
-                SizedBox(height: 16),
+                const SizedBox(height: 16),
                 TextButton(
                   onPressed: () {
                     Navigator.pushReplacementNamed(context, '/createUser');
                   },
                   style: TextButton.styleFrom(
-                    primary: Colors.purple, // Change text color to purple
+                    foregroundColor: Colors.purple, // Change text color to purple
                   ),
                   child: const Text('Create User'),
                 ),

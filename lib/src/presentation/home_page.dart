@@ -1,9 +1,10 @@
 import 'package:flutter/material.dart';
-import 'package:url_launcher/url_launcher.dart';
 import 'package:multi_select_flutter/multi_select_flutter.dart';
+import 'package:url_launcher/url_launcher.dart';
+
+import '../actions/get_comments.dart';
 import '../actions/load_items.dart';
 import '../actions/set.dart';
-import '../actions/get_comments.dart';
 import '../models/app_state.dart';
 import '../models/app_user.dart';
 import '../models/unsplash_image.dart';
@@ -14,7 +15,7 @@ import 'extensions.dart';
 import 'user_picture.dart';
 
 class HomePage extends StatefulWidget {
-  const HomePage({Key? key}) : super(key: key);
+  const HomePage({super.key});
 
   @override
   State<HomePage> createState() => _HomePageState();
@@ -23,7 +24,7 @@ class HomePage extends StatefulWidget {
 class _HomePageState extends State<HomePage> {
   final ScrollController controller = ScrollController();
   final TextEditingController textController = TextEditingController();
-  List<String> selectedColors = [];
+  List<String> selectedColors = <String>[];
 
   @override
   void initState() {
@@ -110,15 +111,15 @@ class _HomePageState extends State<HomePage> {
                         Padding(
                           padding: const EdgeInsets.symmetric(horizontal: 16.0),
                           child: MultiSelectDialogField<String>(
-                            buttonText: Text('Select Colors'),
-                            title: Text('Colors'),
+                            buttonText: const Text('Select Colors'),
+                            title: const Text('Colors'),
                             items: allColors
-                                .map((color) => MultiSelectItem<String>(color, color))
+                                .map((String color) => MultiSelectItem<String>(color, color))
                                 .toList(),
                             listType: MultiSelectListType.CHIP,
-                            onConfirm: (values) {
+                            onConfirm: (List<String> values) {
                               setState(() {
-                                selectedColors = values ?? [];
+                                selectedColors = values;
                                 context.dispatch(SetColor(selectedColors.join(',')));
                                 context.dispatch(const LoadItems());
                               });
@@ -137,7 +138,7 @@ class _HomePageState extends State<HomePage> {
                             child: SingleChildScrollView(
                               child: Column(
                                 children: <Widget>[
-                                  for (UnsplashImage unsplashImage in images)
+                                  for (final UnsplashImage unsplashImage in images)
                                     GestureDetector(
                                       onTap: () {
                                         if (user != null) {
@@ -162,11 +163,11 @@ class _HomePageState extends State<HomePage> {
                                                   height: 150,
                                                   fit: BoxFit.cover,
                                                 ),
-                                                SizedBox(width: 8),
+                                                const SizedBox(width: 8),
                                                 Expanded(
                                                   child: Column(
                                                     crossAxisAlignment: CrossAxisAlignment.start,
-                                                    children: [
+                                                    children: <Widget>[
                                                       Text(
                                                         unsplashImage.description,
                                                         style: const TextStyle(fontWeight: FontWeight.bold),
