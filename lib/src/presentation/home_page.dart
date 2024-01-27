@@ -90,10 +90,26 @@ class _HomePageState extends State<HomePage> {
                             },
                             child: const UserPicture(),
                           ),
+                        if (user == null)
+                          TextButton(
+                            onPressed: () {
+                              // Placeholder for login functionality
+                              Navigator.pushNamed(context, '/loginUser');
+                            },
+                            style: TextButton.styleFrom(
+                              primary: Colors.white, // Set text color to white
+                            ),
+                            child: const Text('Login'),
+                          ),
                       ],
                     ),
                     body: Column(
                       children: <Widget>[
+                        if (images.isEmpty && !isLoading)
+                          const Padding(
+                            padding: EdgeInsets.all(16.0),
+                            child: Text('No photos found. Showing most popular pictures.'),
+                          ),
                         Padding(
                           padding: const EdgeInsets.all(8.0),
                           child: TextField(
