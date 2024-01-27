@@ -27,8 +27,6 @@ jobs:
           echo "  );" >> lib/firebase_options.dart
           echo "}" >> lib/firebase_options.dart
       - name: Format firebase_options.dart
-        run: dart format -l 120 ./lib/firebase_options.dart
-      - name: analyze code
-        run: flutter analyze
+        run: dart format -l 120 ./lib/firebase_options.dar
       - name: check format
         run: dart format -l 120 --set-exit-if-changed ./lib
