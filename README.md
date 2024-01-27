@@ -31,4 +31,4 @@ A Flutter application that utilizes the Unsplash API to display images, allows u
 - Appropriate error messages are displayed when needed.
 
 
-##Feel free to check my demo video (ﾉ◕ヮ◕)ﾉ*:･ﾟ✧!
+## Feel free to check my demo video (ﾉ◕ヮ◕)ﾉ*:･ﾟ✧!
