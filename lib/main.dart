@@ -31,7 +31,7 @@ Future<dynamic> main() async {
   final FirebaseStorage storage = FirebaseStorage.instance;
   final FirebaseFirestore firestore = FirebaseFirestore.instance;
   final ImageApi api = ImageApi(dotenv.env['API_KEY']!, client, firestore);
-  final AuthApi authApi = AuthApi(auth: auth, storage: storage);
+  final AuthApi authApi = AuthApi(auth: auth, storage: storage, firestore: firestore);
   final AppEpics appEpic = AppEpics(api, authApi);
 
   final Store<AppState> store = Store<AppState>(
